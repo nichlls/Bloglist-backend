@@ -18,6 +18,11 @@ const favouriteBlog = (blogs) => {
   return favouriteBlog
 }
 
+// TODO: Complete
+const mostBlogs = (blogs) => {
+
+}
+
 module.exports = {
   dummy, totalLikes, favouriteBlog
 }
