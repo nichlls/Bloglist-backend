@@ -63,13 +63,13 @@ const initialBlogs = [
 beforeEach(async () => {
   await Blog.deleteMany({})
 
-  initialBlogs.forEach(async blog => {
-    let blogObject = new Blog(blog)
-    await blogObject.save()
-  })
+  const blogObjects = initialBlogs
+    .map(blog => new Blog(blog))
+  const promiseArray = blogObjects.map(blog => blog.save())
+  await Promise.all(promiseArray)
 })
 
-describe.only('blog tests', () => {
+describe('blog tests', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -83,7 +83,10 @@ describe.only('blog tests', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    assert.strictEqual(response.body.length, 5)
+    console.log(Blog.find({}))
+
+
+    assert.strictEqual(response.body.length, 6)
   })
 
   after(async () => {
