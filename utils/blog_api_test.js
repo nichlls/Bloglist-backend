@@ -1,4 +1,6 @@
 const { describe, test, after, beforeEach } = require('node:test')
+const assert = require('node:assert')
+
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 
@@ -81,11 +83,7 @@ describe.only('blog tests', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    // Check the length of the returned blog posts array
-    const blogs = response.body
-
-    // You can either compare against a static number, e.g., 10
-    expect(blogs).toHaveLength(10)
+    assert.strictEqual(response.body.length, 5)
   })
 
   after(async () => {
