@@ -86,11 +86,10 @@ describe('blog tests', () => {
     assert.strictEqual(response.body.length, 6)
   })
 
-  test('unique indentifier property is named id, not _id', async () => {
+  test('unique indentifier property is named id', async () => {
     const response = await Blog.findOne()
 
-    console.log(response)
-
+    assert.ok(response.id, 'ID field does not exist')
   })
 
   after(async () => {
