@@ -83,10 +83,14 @@ describe('blog tests', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    console.log(Blog.find({}))
-
-
     assert.strictEqual(response.body.length, 6)
+  })
+
+  test('unique indentifier property is named id, not _id', async () => {
+    const response = await Blog.findOne()
+
+    console.log(response)
+
   })
 
   after(async () => {
