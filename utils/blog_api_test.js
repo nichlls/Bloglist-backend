@@ -6,6 +6,7 @@ const supertest = require('supertest')
 
 const app = require('../app')
 const Blog = require('../models/blog')
+const { title } = require('node:process')
 
 const api = supertest(app)
 
@@ -90,6 +91,33 @@ describe('blog tests', () => {
     const response = await Blog.findOne()
 
     assert.ok(response.id, 'ID field does not exist')
+  })
+
+  test('add a blog post', async () => {
+    const initialResponse = await api
+      .get('/api/blogs')
+
+    const newBlog = {
+      title: 'New blog',
+      author: 'Alex Ander',
+      url: 'https://www.google.com',
+      likes: 564,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const finalResponse = await api
+      .get('/api/blogs')
+
+    assert(finalResponse.body[finalResponse.body.length - 1].title === newBlog.title, 'Title of latest blog does not match new blog')
+
+    assert(finalResponse.body[finalResponse.body.length - 1].content === newBlog.content, 'Content of latest blog does not match new blog')
+
+    assert(finalResponse.body.length === initialResponse.body.length + 1, 'Failed to add new blog')
   })
 
   after(async () => {
