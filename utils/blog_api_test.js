@@ -6,7 +6,6 @@ const supertest = require('supertest')
 
 const app = require('../app')
 const Blog = require('../models/blog')
-const { title } = require('node:process')
 
 const api = supertest(app)
 
