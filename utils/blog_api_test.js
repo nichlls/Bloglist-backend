@@ -164,6 +164,24 @@ describe('blog tests', () => {
       .expect(404)
   })
 
+  test('update a blog', async () => {
+    const blogs = await api
+      .get('/api/blogs')
+
+    const updateData = {
+      url: 'http://www.google.com',
+      likes: 1050,
+    }
+
+    const response = await api
+      .put(`/api/blogs/${blogs.body[0].id}`)
+      .send(updateData)
+      .expect(200)
+
+    assert.strictEqual(response.body.likes, updateData.likes)
+    assert.strictEqual(response.body.url, updateData.url)
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })

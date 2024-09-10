@@ -21,13 +21,38 @@ blogsRouter.post('/', async (request, response) => {
 blogsRouter.delete('/:id', async (request, response) => {
   const id = request.params.id
 
-  const deletedBlog = Blog.findByIdAndDelete(id)
+  const deletedBlog = await Blog.findByIdAndDelete(id)
 
   if (!deletedBlog) {
     return response.status(404).json({ error: 'Could not find a blog with supplied ID' })
   }
 
   response.status(204).end()
+})
+
+blogsRouter.put('/:id', async (request, response) => {
+  const id = request.params.id
+  const data = request.body
+
+  const updated = {}
+
+  if (data.likes) {
+    updated.likes = data.likes
+  }
+
+  if (data.url) {
+    updated.url = data.url
+  }
+
+  const blogToUpdate = await Blog.findByIdAndUpdate(id,
+    { $set: updated },
+    { new: true, runValidators: true })
+
+  if (!blogToUpdate) {
+    return response.status(404).json({ error: 'Could not find a blog with supplied ID' })
+  }
+
+  response.status(200).json(blogToUpdate)
 })
 
 module.exports = blogsRouter
