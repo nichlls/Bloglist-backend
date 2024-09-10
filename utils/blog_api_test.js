@@ -151,6 +151,19 @@ describe('blog tests', () => {
 
   })
 
+  test('delete a blog', async () => {
+    const response = await api
+      .get('/api/blogs')
+
+    await api
+      .delete(`/api/blogs/${response.body[0].id}`)
+      .expect(204)
+
+    await api
+      .get(`/api/blogs/${response.body[0].id}`)
+      .expect(404)
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })
