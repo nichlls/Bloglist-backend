@@ -60,16 +60,16 @@ const initialBlogs = [
   }
 ]
 
-beforeEach(async () => {
-  await Blog.deleteMany({})
+describe('blog api tests', () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({})
 
-  const blogObjects = initialBlogs
-    .map(blog => new Blog(blog))
-  const promiseArray = blogObjects.map(blog => blog.save())
-  await Promise.all(promiseArray)
-})
+    const blogObjects = initialBlogs
+      .map(blog => new Blog(blog))
+    const promiseArray = blogObjects.map(blog => blog.save())
+    await Promise.all(promiseArray)
+  })
 
-describe('blog tests', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
