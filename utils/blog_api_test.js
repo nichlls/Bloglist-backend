@@ -138,6 +138,19 @@ describe('blog tests', () => {
     assert(response.body[response.body.length - 1].likes === 0, 'Blog likes do not at 0')
   })
 
+  test('response is 400 if title or url is missing', async () => {
+    const newBlog = {
+      author: 'Name Name',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })
