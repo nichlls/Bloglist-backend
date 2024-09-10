@@ -119,6 +119,25 @@ describe('blog tests', () => {
     assert(finalResponse.body.length === initialResponse.body.length + 1, 'Failed to add new blog')
   })
 
+  test('likes property defaults to 0 when missing', async () => {
+    const newBlog = {
+      title: 'Test blog',
+      author: 'Name Name',
+      url: 'https://www.google.com',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api
+      .get('/api/blogs')
+
+    assert(response.body[response.body.length - 1].likes === 0, 'Blog likes do not at 0')
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })
