@@ -9,6 +9,7 @@ const mongoose = require('mongoose')
 const MONGODB_URI = config.MONGODB_URI
 
 const blogsRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/user')
 
 mongoose.set('strictQuery', false)
 
@@ -22,6 +23,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api/blogs', blogsRouter)
+app.use('/app/users', usersRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
