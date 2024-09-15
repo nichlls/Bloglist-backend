@@ -9,5 +9,17 @@ Content-Type: application/json
     "title": "Title Here",
     "author": "Author Here",
     "url": "www.google.com",
+    "userId": "66e7139d8d391c19ffbf816a",
     "likes": "352"
+}
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "jsmith",
+    "name": "John Smith",
+    "password": "pass123"
 }
