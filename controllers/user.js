@@ -16,7 +16,10 @@ usersRouter.post('/', async (request, response) => {
     return response.status(400).json({ error: 'Username is too short' })
   }
 
-  if (password.length < 3)
+  if (!password)
+  {
+    return response.status(400).json({ error: 'Password is required' })
+  } else if (password.length < 3)
   {
     return response.status(400).json({ error: 'Password is too short' })
   }
