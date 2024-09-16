@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('blogs')
 
   response.json(users)
 })
@@ -23,8 +23,6 @@ usersRouter.post('/', async (request, response) => {
   {
     return response.status(400).json({ error: 'Password is too short' })
   }
-
-  console.log('request = ', request.body)
 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)

@@ -88,7 +88,7 @@ describe('blog api tests', () => {
     const userObjects = initialUsers
       .map(user => new User(user))
     const newPromiseArray = userObjects.map(user => user.save())
-    await Promise.all(promiseArray)
+    await Promise.all(newPromiseArray)
   })
 
   test('blogs are returned as json', async () => {
