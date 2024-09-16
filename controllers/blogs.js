@@ -11,6 +11,11 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const blog = new Blog(request.body)
 
+  if (!request.body.userId)
+  {
+    return response.status(400).json({ error: 'User ID is missing' })
+  }
+
   // Get userId from request's body
   const user = await User.findById(request.body.userId)
 
