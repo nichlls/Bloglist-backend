@@ -15,6 +15,7 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const blog = new Blog(request.body)
 
+  // Use request body, because blog has been transformed through mongoose
   if (!request.body.userId)
   {
     return response.status(400).json({ error: 'User ID is missing' })
