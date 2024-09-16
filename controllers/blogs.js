@@ -6,7 +6,7 @@ blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
     .populate({
       path: 'user',
-      select: 'username name' // Only include 'username' and 'name' fields
+      select: 'username name'
     })
 
   response.json(blogs)
