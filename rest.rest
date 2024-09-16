@@ -1,4 +1,4 @@
-GET http://localhost:3003/api/users
+GET http://localhost:3003/api/blogs
 
 ###
 
@@ -9,7 +9,7 @@ Content-Type: application/json
     "title": "Title Here",
     "author": "Author Here",
     "url": "www.google.com",
-    "userId": "66e7139d8d391c19ffbf816a",
+    "userId": "placeholder",
     "likes": "352"
 }
 

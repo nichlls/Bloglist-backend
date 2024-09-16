@@ -6,6 +6,7 @@ const supertest = require('supertest')
 
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
@@ -60,6 +61,19 @@ const initialBlogs = [
   }
 ]
 
+const initialUsers = [
+  {
+    username: 'root',
+    name: 'root',
+    password: 'root',
+  },
+  {
+    username: 'tuser',
+    name: 'Test User',
+    password: 'password'
+  }
+]
+
 describe('blog api tests', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
@@ -67,6 +81,13 @@ describe('blog api tests', () => {
     const blogObjects = initialBlogs
       .map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
+    await Promise.all(promiseArray)
+
+    await User.deleteMany({})
+
+    const userObjects = initialUsers
+      .map(user => new User(user))
+    const newPromiseArray = userObjects.map(user => user.save())
     await Promise.all(promiseArray)
   })
 
@@ -96,10 +117,16 @@ describe('blog api tests', () => {
     const initialResponse = await api
       .get('/api/blogs')
 
+    const users = await api
+      .get('/api/users')
+
+    const userId = users.body[0].id
+
     const newBlog = {
       title: 'New blog',
       author: 'Alex Ander',
       url: 'https://www.google.com',
+      userId: userId,
       likes: 564,
     }
 
@@ -120,10 +147,16 @@ describe('blog api tests', () => {
   })
 
   test('likes property defaults to 0 when missing', async () => {
+    const users = await api
+      .get('/api/users')
+
+    const userId = users.body[0].id
+
     const newBlog = {
       title: 'Test blog',
       author: 'Name Name',
       url: 'https://www.google.com',
+      userId: userId,
     }
 
     await api
@@ -139,8 +172,14 @@ describe('blog api tests', () => {
   })
 
   test('response is 400 if title or url is missing', async () => {
+    const users = await api
+      .get('/api/users')
+
+    const userId = users.body[0].id
+
     const newBlog = {
       author: 'Name Name',
+      userId: userId,
     }
 
     await api
