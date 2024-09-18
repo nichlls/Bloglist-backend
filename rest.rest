@@ -18,12 +18,13 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpzbWl0aCIsImlkIjoiNjZlNzEzOWQ4ZDM5MWMxOWZmYmY4MTZhIiwiaWF0IjoxNzI2NjgwMTE4fQ.r24ouyBCQu01wMHku7dxeMzcWg5EB1XOyKChz1E6XMs
 
 {
     "title": "Title Here",
     "author": "Author Here",
     "url": "www.google.com",
-    "userId": "placeholder",
+    "userId": "66e7139d8d391c19ffbf816a",
     "likes": "352"
 }
 
