@@ -20,10 +20,13 @@ blogsRouter.post('/', async (request, response) => {
 
   // Token auth
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
+  if (!decodedToken.id)
+  {
     return response.status(401).json({ error: 'Invalid token' })
   }
   const user = await User.findById(decodedToken.id)
+  console.log('user = ', user)
+
 
   // Use request body, because blog has been transformed through mongoose
   if (!request.body.userId)
@@ -33,7 +36,8 @@ blogsRouter.post('/', async (request, response) => {
 
   blog.user = user._id
 
-  if (!blog.title || !blog.url) {
+  if (!blog.title || !blog.url)
+  {
     return response.status(400).json({ error: 'Title or URL is missing' })
   }
 
@@ -47,13 +51,47 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
+  // Token auth
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id)
+  {
+    return response.status(401).json({ error: 'Invalid token' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user)
+  {
+    return response.status(401).json({ error: 'Invalid user' })
+  }
+
   const id = request.params.id
 
-  const deletedBlog = await Blog.findByIdAndDelete(id)
+  const blogToDelete = await Blog.findById(id)
+  if (!blogToDelete)
+  {
+    return response.status(401).json({ error: 'Invalid blog to delete' })
+  }
 
-  if (!deletedBlog) {
+  let deletedBlog = null
+
+  // Delete if user is creator of blog
+  if (blogToDelete.user.toString() === user.id.toString())
+  {
+    deletedBlog = await Blog.findByIdAndDelete(id)
+  }
+  else
+  {
+    return response.status(401).json({ error: 'User does not have permission to delete' })
+  }
+
+  if (!deletedBlog)
+  {
     return response.status(404).json({ error: 'Could not find a blog with supplied ID' })
   }
+
+  // Remove deleted blog from user.blog parameter
+  user.blogs = user.blogs.filter(blogId => blogId.toString() !== id)
+  await user.save()
 
   response.status(204).end()
 })
