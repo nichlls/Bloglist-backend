@@ -1,9 +1,8 @@
 const blogsRouter = require('express').Router()
+const middleware = require('../utils/middleware')
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
-
-const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
@@ -15,18 +14,10 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const blog = new Blog(request.body)
 
-  // Token auth
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id)
-  {
-    return response.status(401).json({ error: 'Invalid token' })
-  }
-  const user = await User.findById(decodedToken.id)
-  console.log('user = ', user)
-
+  const user = request.user
 
   // Use request body, because blog has been transformed through mongoose
   if (!request.body.userId)
@@ -50,26 +41,16 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
-  // Token auth
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id)
-  {
-    return response.status(401).json({ error: 'Invalid token' })
-  }
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
 
-  const user = await User.findById(decodedToken.id)
-  if (!user)
-  {
-    return response.status(401).json({ error: 'Invalid user' })
-  }
+  const user = request.user
 
   const id = request.params.id
 
   const blogToDelete = await Blog.findById(id)
   if (!blogToDelete)
   {
-    return response.status(401).json({ error: 'Invalid blog to delete' })
+    return response.status(404).json({ error: 'Could not find a blog with supplied ID' })
   }
 
   let deletedBlog = null
@@ -81,7 +62,7 @@ blogsRouter.delete('/:id', async (request, response) => {
   }
   else
   {
-    return response.status(401).json({ error: 'User does not have permission to delete' })
+    return response.status(403).json({ error: 'User does not have permission to delete' })
   }
 
   if (!deletedBlog)

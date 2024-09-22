@@ -10,7 +10,7 @@ POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-    "username": "asmith",
+    "username": "jsmith",
     "password": "pass123"
 }
 
@@ -18,20 +18,20 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpzbWl0aCIsImlkIjoiNjZlNzEzOWQ4ZDM5MWMxOWZmYmY4MTZhIiwiaWF0IjoxNzI2ODYyMDg4fQ.T2btWVU50X-hNZDTjmKzAvGLBozNlPyV47gs5mn_Yto
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpzbWl0aCIsImlkIjoiNjZlZGVjYTUxNDNlZTAzMGU4MDIyM2NiIiwiaWF0IjoxNzI3MDE1MTk5fQ.q58jvWN-F7GM53Tx-z-ts-OgJQCAvfFD5qS_ae8HCP8
 
 {
     "title": "Title Here",
     "author": "Author Here",
     "url": "www.google.com",
-    "userId": "66e7139d8d391c19ffbf816a",
+    "userId": "66edeca5143ee030e80223cb",
     "likes": "352"
 }
 
 ###
 
-DELETE  http://localhost:3003/api/blogs/66edd3203e132f43c4c8c551
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFzbWl0aCIsImlkIjoiNjZlNzIxYTJiZTZiZGQxZWIwZjdmOTQ1IiwiaWF0IjoxNzI2ODY0NDg1fQ.zBGXvFMrOBgaoRSCdCZRjXM47KOs_9YiFVToN0HcEro
+DELETE  http://localhost:3003/api/blogs/66f021e89d2ca694d36bbd73
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpzbWl0aCIsImlkIjoiNjZlZGVjYTUxNDNlZTAzMGU4MDIyM2NiIiwiaWF0IjoxNzI3MDE1MTk5fQ.q58jvWN-F7GM53Tx-z-ts-OgJQCAvfFD5qS_ae8HCP8
 
 ###
 
