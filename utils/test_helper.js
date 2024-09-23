@@ -34,8 +34,8 @@ const mostBlogs = (blogs) => {
     }
   })
 
-  let highestBlogCount = 0
   let highestAuthor = ''
+  let highestBlogCount = 0
 
   for (const author in authorBlogs)
   {
@@ -53,11 +53,43 @@ const mostBlogs = (blogs) => {
 
 }
 
+const mostLikes = (blogs) => {
+  const authorBlogs = {}
+
+  blogs.forEach(blog => {
+    const author = blog.author
+    if (author in authorBlogs) {
+      authorBlogs[author] += blog.likes
+    }
+    else
+    {
+      authorBlogs[author] = blog.likes
+    }
+  })
+
+  let highestAuthor = ''
+  let highestLikeCount = 0
+
+  for (const author in authorBlogs)
+  {
+    if (authorBlogs[author] > highestLikeCount)
+    {
+      highestLikeCount = authorBlogs[author]
+      highestAuthor = author
+    }
+  }
+
+  return {
+    author: highestAuthor,
+    likes: highestLikeCount
+  }
+}
+
 const usersInDb = async () => {
   const users = await User.find({})
   return users.map(u => u.toJSON())
 }
 
 module.exports = {
-  dummy, totalLikes, favouriteBlog, usersInDb, mostBlogs
+  dummy, totalLikes, favouriteBlog, usersInDb, mostBlogs, mostLikes
 }
