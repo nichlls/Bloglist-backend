@@ -20,8 +20,36 @@ const favouriteBlog = (blogs) => {
   return favouriteBlog
 }
 
-// TODO: Complete
 const mostBlogs = (blogs) => {
+  const authorBlogs = {}
+
+  blogs.forEach(blog => {
+    const author = blog.author
+    if (author in authorBlogs) {
+      authorBlogs[author] += 1
+    }
+    else
+    {
+      authorBlogs[author] = 1
+    }
+  })
+
+  let highestBlogCount = 0
+  let highestAuthor = ''
+
+  for (const author in authorBlogs)
+  {
+    if (authorBlogs[author] > highestBlogCount)
+    {
+      highestBlogCount = authorBlogs[author]
+      highestAuthor = author
+    }
+  }
+
+  return {
+    author: highestAuthor,
+    blogs: highestBlogCount
+  }
 
 }
 
@@ -31,5 +59,5 @@ const usersInDb = async () => {
 }
 
 module.exports = {
-  dummy, totalLikes, favouriteBlog, usersInDb
+  dummy, totalLikes, favouriteBlog, usersInDb, mostBlogs
 }
